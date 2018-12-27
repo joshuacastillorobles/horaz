@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.joshua.addressbook.model.AddressBook;
-import com.joshua.addressbook.service.AddressBookServiceJPA;
+import com.joshua.addressbook.service.jpa.AddressBookService;
 import com.joshua.addressbook.utilities.Support;
 
-@Controller
+//@Controller
 public class AddressController {
 
 	@Autowired
-	private AddressBookServiceJPA addressService;
+	private AddressBookService addressService;
 
 	@GetMapping("/")
 	public String home(@ModelAttribute AddressBook addressBook, Model model) {

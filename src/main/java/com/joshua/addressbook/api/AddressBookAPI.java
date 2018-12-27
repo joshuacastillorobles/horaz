@@ -17,7 +17,7 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.joshua.addressbook.model.AddressBook;
-import com.joshua.addressbook.service.AddressBookServiceJPA;
+import com.joshua.addressbook.service.jpa.AddressBookService;
 import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
@@ -25,7 +25,7 @@ import com.joshua.addressbook.utilities.RestPreconditions;
 public class AddressBookAPI {
 	
 	@Autowired
-	private AddressBookServiceJPA addressService;
+	private AddressBookService addressService;
 
 	@GetMapping()
 	public ResponseEntity<List<AddressBook>> findAll() {

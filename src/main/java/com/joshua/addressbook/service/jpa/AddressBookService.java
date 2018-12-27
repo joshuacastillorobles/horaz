@@ -1,4 +1,4 @@
-package com.joshua.addressbook.service;
+package com.joshua.addressbook.service.jpa;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.joshua.addressbook.model.AddressBook;
 import com.joshua.addressbook.repository.AddressBookRepository;
+import com.joshua.addressbook.service.IAddressBookService;
 
 @Service
-public class AddressBookServiceJPA implements IAddressBookService {
+public class AddressBookService implements IAddressBookService {
 
 	@Autowired
 	private AddressBookRepository addressRepo;
