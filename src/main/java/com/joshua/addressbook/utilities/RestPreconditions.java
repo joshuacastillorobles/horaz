@@ -8,8 +8,9 @@ public class RestPreconditions {
 		if (resource == null) {
 			throw new ResourceNotFoundException("Resource not found");
 		}
-		
+
 		return resource;
 	}
+
 
 }
