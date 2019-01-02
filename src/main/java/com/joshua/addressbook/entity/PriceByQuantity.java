@@ -1,4 +1,4 @@
-package com.joshua.addressbook.model;
+package com.joshua.addressbook.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,15 +10,15 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "prices_by_quantity")
-public class PricesByQuantity {
+public class PriceByQuantity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "weight_Ranges_id")
-	private WeightRanges weightRanges;
+	@JoinColumn(name = "weight_ranges_id")
+	private WeightRange weightRange;
 
 	private Integer min;
 	private Integer max;
@@ -32,12 +32,12 @@ public class PricesByQuantity {
 		this.id = id;
 	}
 
-	public WeightRanges getWeightRanges() {
-		return weightRanges;
+	public WeightRange getWeightRanges() {
+		return weightRange;
 	}
 
-	public void setWeightRanges(WeightRanges weightRanges) {
-		this.weightRanges = weightRanges;
+	public void setWeightRanges(WeightRange weightRange) {
+		this.weightRange = weightRange;
 	}
 
 	public Integer getMin() {
@@ -66,7 +66,7 @@ public class PricesByQuantity {
 
 	@Override
 	public String toString() {
-		return "PricesByQuantity [id=" + id + ", weightRanges=" + weightRanges + ", min=" + min + ", max=" + max
+		return "PricesByQuantity [id=" + id + ", weightRanges=" + weightRange + ", min=" + min + ", max=" + max
 				+ ", price=" + price + "]";
 	}
 

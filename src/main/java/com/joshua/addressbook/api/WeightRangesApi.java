@@ -16,50 +16,48 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.model.WeightRanges;
-import com.joshua.addressbook.service.jpa.WeightRangeService;
+import com.joshua.addressbook.entity.WeightRange;
+import com.joshua.addressbook.service.WeightRangesService;
 import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
-@RequestMapping("/weight")
-public class WeightRangeApi {
+@RequestMapping("/weight-ranges")
+public class WeightRangesApi {
 
 	@Autowired
-	private WeightRangeService serviceWeight;
+	private WeightRangesService weightRangesService;
 
 	@GetMapping()
-	public ResponseEntity<List<WeightRanges>> findAll() {
-		List<WeightRanges> weightRanges = serviceWeight.findAll();
-		return new ResponseEntity<>(weightRanges, HttpStatus.OK);
+	public ResponseEntity<List<WeightRange>> findAll() {
+		List<WeightRange> weightRange = weightRangesService.findAll();
+		return new ResponseEntity<>(weightRange, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<WeightRanges>findOne(@PathVariable("id") Integer idWeightRange){
+	public ResponseEntity<WeightRange>findOne(@PathVariable("id") Integer idWeightRange){
 		RestPreconditions.checkFound(idWeightRange);
-		WeightRanges weightRanges=serviceWeight.findOne(idWeightRange);
-		return new ResponseEntity<WeightRanges>(weightRanges,HttpStatus.OK);
+		WeightRange weightRange=weightRangesService.findOne(idWeightRange);
+		return new ResponseEntity<WeightRange>(weightRange,HttpStatus.OK);
 	}
 
 	@PostMapping()
-	public ResponseEntity<?> create(@RequestBody WeightRanges weightRanges, UriComponentsBuilder uriBuilder) {
-		serviceWeight.create(weightRanges);
-		UriComponents uriComponents = uriBuilder.path("/{id}").buildAndExpand(weightRanges.getId());
+	public ResponseEntity<?> create(@RequestBody WeightRange weightRange, UriComponentsBuilder uriBuilder) {
+		weightRangesService.create(weightRange);
+		UriComponents uriComponents = uriBuilder.path("/{id}").buildAndExpand(weightRange.getId());
 		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
-	
-	
 
-	@PutMapping("/update/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") Integer idWeightRange, @RequestBody WeightRanges weightRanges) {
-		RestPreconditions.checkFound(serviceWeight.findOne(idWeightRange));
-		serviceWeight.updateWeight(weightRanges);
+	@PutMapping("/{id}")
+	public ResponseEntity<?> update(@PathVariable("id") Integer idWeightRange, @RequestBody WeightRange weightRange) {
+		RestPreconditions.checkFound(weightRangesService.findOne(idWeightRange));
+		weightRangesService.updateWeight(weightRange);
 		return ResponseEntity.ok("resource saved");
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Integer idWeightRange){
 		RestPreconditions.checkFound(idWeightRange);
-		serviceWeight.deleteId(idWeightRange);
+		weightRangesService.deleteId(idWeightRange);
 		return ResponseEntity.noContent().build();
 	}
 

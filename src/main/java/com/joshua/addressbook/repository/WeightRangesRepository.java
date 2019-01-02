@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.joshua.addressbook.model.CarriersCode;
+import com.joshua.addressbook.entity.WeightRange;
 
 @Repository
-public interface CarrierCodeRepository extends JpaRepository<CarriersCode, String>{
+public interface WeightRangesRepository extends JpaRepository<WeightRange, Integer> {
 
-	List<CarriersCode> findByName(String name);
+	List<WeightRange> findByshipmentType(String shipmentType);
 	
 }

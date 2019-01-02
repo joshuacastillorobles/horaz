@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.model.AddressBook;
-import com.joshua.addressbook.service.jpa.AddressBookService;
+import com.joshua.addressbook.entity.AddressBook;
+import com.joshua.addressbook.service.AddressBookService;
 import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController

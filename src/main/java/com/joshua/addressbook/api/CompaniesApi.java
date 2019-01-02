@@ -16,26 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.model.Company;
-import com.joshua.addressbook.service.jpa.CompanyService;
+import com.joshua.addressbook.entity.Company;
+import com.joshua.addressbook.service.CompaniesService;
 import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
 @RequestMapping("/companies")
-public class CompanyApi {
+public class CompaniesApi {
 
 	@Autowired
-	private CompanyService serviceCompany;
+	private CompaniesService companiesService;
 
 	@GetMapping()
 	public ResponseEntity<List<Company>> findAll() {
-		List<Company> companies = serviceCompany.findAll();
+		List<Company> companies = companiesService.findAll();
 		return new ResponseEntity<>(companies, HttpStatus.OK);
 	}
 
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody Company company, UriComponentsBuilder uriBuilder) {
-		serviceCompany.create(company);
+		companiesService.create(company);
 		UriComponents uriComponents = uriBuilder.path("create/{id}").buildAndExpand(company.getId());
 
 		return ResponseEntity.created(uriComponents.toUri()).build();
@@ -43,8 +43,8 @@ public class CompanyApi {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Company> findOne(@PathVariable("id") int idCompany) {
-		RestPreconditions.checkFound(serviceCompany.findOne(idCompany));
-		Company company = serviceCompany.findOne(idCompany);
+		RestPreconditions.checkFound(companiesService.findOne(idCompany));
+		Company company = companiesService.findOne(idCompany);
 
 		return new ResponseEntity<Company>(company, HttpStatus.OK);
 	}
@@ -52,23 +52,23 @@ public class CompanyApi {
 	@GetMapping("/{name}")
 	public ResponseEntity<List<Company>> findName(@PathVariable("name") String companyName) {
 		RestPreconditions.checkFound(companyName);
-		List<Company> names = serviceCompany.findName(companyName);
+		List<Company> names = companiesService.findName(companyName);
 
 		return new ResponseEntity<>(names, HttpStatus.OK);
 	}
 
-	@PutMapping("/update/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> updateCompany(@PathVariable("id") Integer idCompany, @RequestBody Company company) {
-		RestPreconditions.checkFound(serviceCompany.findOne(idCompany));
-		serviceCompany.updateCompany(company);
+		RestPreconditions.checkFound(companiesService.findOne(idCompany));
+		companiesService.updateCompany(company);
 
 		return ResponseEntity.ok("resource saved");
 	}
 
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteCompany(@PathVariable("id") Integer idCompany) {
-		RestPreconditions.checkFound(serviceCompany.findOne(idCompany));
-		serviceCompany.deleteId(idCompany);
+		RestPreconditions.checkFound(companiesService.findOne(idCompany));
+		companiesService.deleteId(idCompany);
 
 		return ResponseEntity.noContent().build();
 	}

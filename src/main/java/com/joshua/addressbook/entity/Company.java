@@ -1,4 +1,4 @@
-package com.joshua.addressbook.model;
+package com.joshua.addressbook.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +14,13 @@ public class Company {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	private String instcode;
 	private String name;
+	
 	@Column(name = "invoice_email_address")
-	private String inVoiceEmailAddress;
+	private String invoiceEmailAddress;
+	
 	private Integer status;
 
 	public Company() {
@@ -47,12 +50,12 @@ public class Company {
 		this.name = name;
 	}
 
-	public String getInVoiceEmailAddress() {
-		return inVoiceEmailAddress;
+	public String getInvoiceEmailAddress() {
+		return invoiceEmailAddress;
 	}
 
-	public void setInVoiceEmailAddress(String inVoiceEmailAddress) {
-		this.inVoiceEmailAddress = inVoiceEmailAddress;
+	public void setInvoiceEmailAddress(String invoiceEmailAddress) {
+		this.invoiceEmailAddress = invoiceEmailAddress;
 	}
 
 	public Integer getStatus() {
@@ -65,8 +68,8 @@ public class Company {
 
 	@Override
 	public String toString() {
-		return "Company [id=" + id + ", instcode=" + instcode + ", name=" + name + ", inVoiceEmailAddress="
-				+ inVoiceEmailAddress + ", status=" + status + "]";
+		return "Company [id=" + id + ", instcode=" + instcode + ", name=" + name + ", invoiceEmailAddress="
+				+ invoiceEmailAddress + ", status=" + status + "]";
 	}
 
 }

@@ -16,46 +16,46 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.model.CarriersCode;
-import com.joshua.addressbook.service.jpa.CarrierCodeService;
+import com.joshua.addressbook.entity.Carrier;
+import com.joshua.addressbook.service.CarriersService;
 import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
-@RequestMapping("/carriercode")
-public class CarriersCodeApi {
+@RequestMapping("/carriers")
+public class CarriersApi {
 
 	@Autowired
-	private CarrierCodeService serviceCarrier;
+	private CarriersService carriersService;
 
 	@GetMapping()
-	public ResponseEntity<List<CarriersCode>> findAll() {
-		List<CarriersCode> carries = serviceCarrier.findAll();
+	public ResponseEntity<List<Carrier>> findAll() {
+		List<Carrier> carries = carriersService.findAll();
 		return new ResponseEntity<>(carries, HttpStatus.OK);
 	}
 
-	@PostMapping("/create")
-	public ResponseEntity<?> create(@RequestBody CarriersCode carriersCode, UriComponentsBuilder uriBuilder) {
-		if (serviceCarrier.verifyCode(carriersCode.getCode()) == false) {
-			serviceCarrier.create(carriersCode);
-			UriComponents uriComponents = uriBuilder.path("/{code}").buildAndExpand(carriersCode.getCode());
+	@PostMapping()
+	public ResponseEntity<?> create(@RequestBody Carrier carrier, UriComponentsBuilder uriBuilder) {
+		if (carriersService.verifyCode(carrier.getCode()) == false) {
+			carriersService.create(carrier);
+			UriComponents uriComponents = uriBuilder.path("/{code}").buildAndExpand(carrier.getCode());
 			return ResponseEntity.created(uriComponents.toUri()).build();
 		}
 
 		return ResponseEntity.ok("duplicate resource");
 	}
 
-	@PutMapping("/update/{code}")
-	public ResponseEntity<?> update(@PathVariable("code") String code, @RequestBody CarriersCode carriersCode) {
-		RestPreconditions.checkFound(serviceCarrier.findOne(code));
-		serviceCarrier.update(carriersCode);
+	@PutMapping("/{code}")
+	public ResponseEntity<?> update(@PathVariable("code") String code, @RequestBody Carrier carrier) {
+		RestPreconditions.checkFound(carriersService.findOne(code));
+		carriersService.update(carrier);
 
 		return ResponseEntity.ok("resource saved");
 	}
 
-	@DeleteMapping("/delete/{code}")
+	@DeleteMapping("/{code}")
 	public ResponseEntity<?> delete(@PathVariable("code") String code) {
 		RestPreconditions.checkFound(code);
-		serviceCarrier.deleteCode(code);
+		carriersService.deleteCode(code);
 		return ResponseEntity.noContent().build();
 	}
 

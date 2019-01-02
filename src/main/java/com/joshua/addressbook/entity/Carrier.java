@@ -1,4 +1,4 @@
-package com.joshua.addressbook.model;
+package com.joshua.addressbook.entity;
 
 
 import javax.persistence.Entity;
@@ -7,13 +7,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "carriers")
-public class CarriersCode {
+public class Carrier {
 
 	@Id
 	private String code;
 	private String name;
 
-	public CarriersCode() {
+	public Carrier() {
 	}
 
 	public String getCode() {

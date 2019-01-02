@@ -1,4 +1,4 @@
-package com.joshua.addressbook.model;
+package com.joshua.addressbook.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

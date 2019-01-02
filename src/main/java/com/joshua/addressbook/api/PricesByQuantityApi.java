@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.model.PricesByQuantity;
-import com.joshua.addressbook.service.jpa.PricesByQuantityService;
+import com.joshua.addressbook.entity.PriceByQuantity;
+import com.joshua.addressbook.service.PricesByQuantityService;
 import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
@@ -28,27 +28,27 @@ public class PricesByQuantityApi {
 	private PricesByQuantityService servicePricesByQuantity;
 
 	@GetMapping()
-	public ResponseEntity<List<PricesByQuantity>> findAll() {
-		List<PricesByQuantity> prices = servicePricesByQuantity.findAll();
+	public ResponseEntity<List<PriceByQuantity>> findAll() {
+		List<PriceByQuantity> prices = servicePricesByQuantity.findAll();
 		return new ResponseEntity<>(prices, HttpStatus.OK);
 	}
 
 	@PostMapping()
-	public ResponseEntity<?> create(@RequestBody PricesByQuantity pricesByQuantity, UriComponentsBuilder uriBuilder) {
-		servicePricesByQuantity.create(pricesByQuantity);
-		UriComponents uriComponents = uriBuilder.path("/create/{id}").buildAndExpand(pricesByQuantity.getId());
+	public ResponseEntity<?> create(@RequestBody PriceByQuantity priceByQuantity, UriComponentsBuilder uriBuilder) {
+		servicePricesByQuantity.create(priceByQuantity);
+		UriComponents uriComponents = uriBuilder.path("/create/{id}").buildAndExpand(priceByQuantity.getId());
 		
 		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
 	
-	@PutMapping("update/{id}")
-	public ResponseEntity<?> findOne(@PathVariable("id")Integer idPricesByQuantity, @RequestBody PricesByQuantity pricesByQuantity){
+	@PutMapping("/{id}")
+	public ResponseEntity<?> update(@PathVariable("id") Integer idPricesByQuantity, @RequestBody PriceByQuantity priceByQuantity){
 		RestPreconditions.checkFound(servicePricesByQuantity.findOne(idPricesByQuantity));
-		servicePricesByQuantity.updateCompany(pricesByQuantity);
+		servicePricesByQuantity.updateCompany(priceByQuantity);
 		return ResponseEntity.ok("resource saved");
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deletePrice(@PathVariable("id") Integer idPricesByQuantity){
 		RestPreconditions.checkFound(idPricesByQuantity);
 		servicePricesByQuantity.deleteId(idPricesByQuantity);

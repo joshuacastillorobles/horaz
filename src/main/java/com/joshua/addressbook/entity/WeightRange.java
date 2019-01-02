@@ -1,4 +1,4 @@
-package com.joshua.addressbook.model;
+package com.joshua.addressbook.entity;
 
 
 import javax.persistence.Column;
@@ -14,28 +14,31 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "weight_ranges")
-public class WeightRanges {
+public class WeightRange {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	@OneToOne
 	@JoinColumn(name = "companies_id")
 	private Company company;
 	
 	@ManyToOne
 	@JoinColumn(name="carriers_code")
-	private CarriersCode carriers;
+	private Carrier carrier;
 	
 	@Column(name = "shipment_type")
 	private String shipmentType;
+	
 	@Column(name = "more_than")
 	private Double moreThan;
+	
 	@Column(name = "up_to")
 	private Double upTo;
 
-	public WeightRanges() {
-
+	public WeightRange() {
+	
 	}
 
 	public Integer getId() {
@@ -54,12 +57,12 @@ public class WeightRanges {
 		this.company = company;
 	}
 
-	public CarriersCode getCarriers() {
-		return carriers;
+	public Carrier getCarrier() {
+		return carrier;
 	}
 
-	public void setCarriers(CarriersCode carriers) {
-		this.carriers = carriers;
+	public void setCarrier(Carrier carrier) {
+		this.carrier = carrier;
 	}
 
 	public String getShipmentType() {
@@ -88,10 +91,8 @@ public class WeightRanges {
 
 	@Override
 	public String toString() {
-		return "WeightRanges [id=" + id + ", company=" + company + ", carriers=" + carriers + ", shipmentType="
+		return "WeightRange [id=" + id + ", company=" + company + ", carriers=" + carrier + ", shipmentType="
 				+ shipmentType + ", moreThan=" + moreThan + ", upTo=" + upTo + "]";
 	}
-
-	
 	
 }
