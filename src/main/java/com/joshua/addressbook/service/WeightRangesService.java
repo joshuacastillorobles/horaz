@@ -38,7 +38,7 @@ public class WeightRangesService {
 	}
 
 	public List<WeightRange> findshipmentType(String shipmentType) {
-		return weightRangesRepository.findByshipmentType(shipmentType);
+		return weightRangesRepository.findByShipmentType(shipmentType);
 	}
 
 }

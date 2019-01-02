@@ -10,6 +10,6 @@ import com.joshua.addressbook.entity.WeightRange;
 @Repository
 public interface WeightRangesRepository extends JpaRepository<WeightRange, Integer> {
 
-	List<WeightRange> findByshipmentType(String shipmentType);
+	List<WeightRange> findByShipmentType(String shipmentType);
 	
 }
