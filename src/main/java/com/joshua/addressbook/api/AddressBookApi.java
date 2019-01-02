@@ -22,7 +22,7 @@ import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
 @RequestMapping("/addresses")
-public class AddressBookAPI {
+public class AddressBookApi {
 	
 	@Autowired
 	private AddressBookService addressService;
