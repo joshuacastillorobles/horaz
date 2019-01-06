@@ -9,9 +9,7 @@ import com.joshua.addressbook.entity.AddressBook;
 
 @Repository
 public interface AddressBookRepository extends JpaRepository<AddressBook, Integer> {
-
-	public List<AddressBook> findByUsername(String username);
-
-	public List<AddressBook> findByPersonName(String person_name);
 	
+	List<AddressBook> findByUsername(String username);
+
 }

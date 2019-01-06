@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.joshua.addressbook.dto.CompanyDto;
+import com.joshua.addressbook.dto.CreateCompanyDto;
 import com.joshua.addressbook.entity.Company;
 import com.joshua.addressbook.service.CompaniesService;
-import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
 @RequestMapping("/companies")
@@ -28,48 +29,38 @@ public class CompaniesApi {
 	private CompaniesService companiesService;
 
 	@GetMapping()
-	public ResponseEntity<List<Company>> findAll() {
-		List<Company> companies = companiesService.findAll();
-		return new ResponseEntity<>(companies, HttpStatus.OK);
+	public ResponseEntity<List<CompanyDto>> findAll() {
+		List<CompanyDto> companyDtos = companiesService.findAll();
+		
+		return new ResponseEntity<>(companyDtos, HttpStatus.OK);
 	}
-
-	@PostMapping
-	public ResponseEntity<?> create(@RequestBody Company company, UriComponentsBuilder uriBuilder) {
-		companiesService.create(company);
-		UriComponents uriComponents = uriBuilder.path("create/{id}").buildAndExpand(company.getId());
-
-		return ResponseEntity.created(uriComponents.toUri()).build();
-	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Company> findOne(@PathVariable("id") int idCompany) {
-		RestPreconditions.checkFound(companiesService.findOne(idCompany));
-		Company company = companiesService.findOne(idCompany);
+	public ResponseEntity<Company> findOne(@PathVariable("id") Integer idCompany) {
+		Company company = companiesService.findById(idCompany);
 
 		return new ResponseEntity<Company>(company, HttpStatus.OK);
 	}
-
-	@GetMapping("/{name}")
-	public ResponseEntity<List<Company>> findName(@PathVariable("name") String companyName) {
-		RestPreconditions.checkFound(companyName);
-		List<Company> names = companiesService.findName(companyName);
-
-		return new ResponseEntity<>(names, HttpStatus.OK);
+	
+	@PostMapping
+	public ResponseEntity<?> create(@RequestBody CreateCompanyDto createCompanyDto, UriComponentsBuilder uriBuilder) {
+		CompanyDto savedCompanyDto = companiesService.save(createCompanyDto);
+		
+		UriComponents uriComponents = uriBuilder.path("/addresses/{id}").buildAndExpand(savedCompanyDto.getId());
+		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCompany(@PathVariable("id") Integer idCompany, @RequestBody Company company) {
-		RestPreconditions.checkFound(companiesService.findOne(idCompany));
-		companiesService.updateCompany(company);
+	@PutMapping
+	public ResponseEntity<?> update(@RequestBody CompanyDto companyDto) {
+		companiesService.update(companyDto);
 
-		return ResponseEntity.ok("resource saved");
+		return ResponseEntity.ok("Resource updated");
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCompany(@PathVariable("id") Integer idCompany) {
-		RestPreconditions.checkFound(companiesService.findOne(idCompany));
-		companiesService.deleteId(idCompany);
-
+	public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
+		companiesService.deleteById(id);
+		
 		return ResponseEntity.noContent().build();
 	}
 

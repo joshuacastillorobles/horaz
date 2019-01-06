@@ -25,7 +25,7 @@ public class WeightRange {
 	private Company company;
 	
 	@ManyToOne
-	@JoinColumn(name="carriers_code")
+	@JoinColumn(name = "carriers_code")
 	private Carrier carrier;
 	
 	@Column(name = "shipment_type")
@@ -38,7 +38,6 @@ public class WeightRange {
 	private Double upTo;
 
 	public WeightRange() {
-	
 	}
 
 	public Integer getId() {

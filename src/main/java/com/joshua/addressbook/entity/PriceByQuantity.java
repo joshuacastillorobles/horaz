@@ -32,11 +32,11 @@ public class PriceByQuantity {
 		this.id = id;
 	}
 
-	public WeightRange getWeightRanges() {
+	public WeightRange getWeightRange() {
 		return weightRange;
 	}
 
-	public void setWeightRanges(WeightRange weightRange) {
+	public void setWeightRange(WeightRange weightRange) {
 		this.weightRange = weightRange;
 	}
 

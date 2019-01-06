@@ -1,61 +1,53 @@
-package com.joshua.addressbook.entity;
+package com.joshua.addressbook.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
-@Entity
-@Table(name = "address_book")
-public class AddressBook {
+import io.swagger.annotations.ApiModel;
 
-	@Id()
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+@ApiModel
+public class CreateAddressBookDto {
+
+	@NotEmpty
+	@Size(max = 45)
 	private String username;
 	
-	@Column(name = "company_name")
+	@Size(max = 45)
 	private String companyName;
 	
-	@Column(name = "person_name")
+	@NotEmpty
+	@Size(max = 45)
 	private String personName;
 	
-	@Column(name = "phone_number")
+	@NotEmpty
+	@Size(max = 15)
 	private String phoneNumber;
 	
-	@Column(name = "address_line1")
+	@NotEmpty
+	@Size(max = 100)
 	private String addressLine1;
 	
-	@Column(name = "address_line2")
+	@Size(max = 100)
 	private String addressLine2;
 	
+	@NotEmpty
+	@Size(max = 45)
 	private String city;
 	
-	@Column(name = "state_or_province_code")
+	@NotEmpty
+	@Size(max = 20)
 	private String stateOrProvinceCode;
 	
-	@Column(name = "postal_code")
+	@NotEmpty
+	@Size(max = 8)
 	private String postalCode;
 	
-	@Column(name = "country_code")
+	@NotEmpty
+	@Size(min = 2, max = 2)
 	private String countryCode;
 	
-	@Column(name = "address_type")
-	private String addressType;
-
-	public AddressBook() {
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	@NotEmpty
+	private AddressType addressType;
 
 	public String getUsername() {
 		return username;
@@ -137,20 +129,12 @@ public class AddressBook {
 		this.countryCode = countryCode;
 	}
 
-	public String getAddressType() {
+	public AddressType getAddressType() {
 		return addressType;
 	}
 
-	public void setAddressType(String addressType) {
+	public void setAddressType(AddressType addressType) {
 		this.addressType = addressType;
-	}
-
-	@Override
-	public String toString() {
-		return "AddressBook [id=" + id + ", username=" + username + ", companyName=" + companyName + ", personName="
-				+ personName + ", phoneNumber=" + phoneNumber + ", addressLine1=" + addressLine1 + ", addressLine2="
-				+ addressLine2 + ", city=" + city + ", stateOrProvinceCode=" + stateOrProvinceCode + ", postalCode="
-				+ postalCode + ", countryCode=" + countryCode + ", addressType=" + addressType + "]";
 	}
 
 }

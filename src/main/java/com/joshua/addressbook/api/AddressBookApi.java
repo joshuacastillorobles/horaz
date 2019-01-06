@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.entity.AddressBook;
+import com.joshua.addressbook.dto.AddressBookDto;
+import com.joshua.addressbook.dto.CreateAddressBookDto;
 import com.joshua.addressbook.service.AddressBookService;
-import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
 @RequestMapping("/addresses")
@@ -27,44 +27,45 @@ public class AddressBookApi {
 	@Autowired
 	private AddressBookService addressService;
 
-	@GetMapping()
-	public ResponseEntity<List<AddressBook>> findAll() {
-		List<AddressBook> addressBooks = addressService.findAll();
-		return new ResponseEntity<>(addressBooks, HttpStatus.OK);
+	@GetMapping
+	public ResponseEntity<List<AddressBookDto>> findAll() {
+		List<AddressBookDto> addressBookDtos = addressService.findAll();
+		
+		return new ResponseEntity<>(addressBookDtos, HttpStatus.OK);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<AddressBook> findOne(@PathVariable("id") Integer id) {
-		RestPreconditions.checkFound(addressService.findById(id));
+	public ResponseEntity<AddressBookDto> findOne(@PathVariable("id") Integer id) {
+		AddressBookDto addressBookDto = addressService.findById(id);
 		
-		AddressBook addressBook = addressService.findById(id);
-		return new ResponseEntity<>(addressBook, HttpStatus.OK);
+		return new ResponseEntity<>(addressBookDto, HttpStatus.OK);
+	}
+	
+	@GetMapping("/username/{username}")
+	public ResponseEntity<List<AddressBookDto>> findByUsername(@PathVariable("username") String username) {
+		List<AddressBookDto> addressBookDtos = addressService.findByUsername(username);
+		
+		return new ResponseEntity<>(addressBookDtos, HttpStatus.OK);
 	}
 
-	@PostMapping()
-	public ResponseEntity<?> create(@RequestBody AddressBook addressBook, UriComponentsBuilder uriBuilder) {
-		addressService.insertAddress(addressBook);
+	@PostMapping
+	public ResponseEntity<?> create(@RequestBody CreateAddressBookDto createAddressBookDto, UriComponentsBuilder uriBuilder) {
+		AddressBookDto savedAddressBookDto = addressService.save(createAddressBookDto);
 		
-		UriComponents uriComponents = uriBuilder.path("/addresses/{id}").buildAndExpand(addressBook.getId());
+		UriComponents uriComponents = uriBuilder.path("/addresses/{id}").buildAndExpand(savedAddressBookDto.getId());
 		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") Integer id, @RequestBody AddressBook addressBook) {
-		RestPreconditions.checkFound(addressService.findById(id));
+	@PutMapping
+	public ResponseEntity<?> update(@RequestBody AddressBookDto addressBookDto) {
+		addressService.update(addressBookDto);
 		
-		addressService.updateAddress(addressBook);
-		
-		return ResponseEntity.ok("resource saved");
+		return ResponseEntity.ok("Resource updated");
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
-		RestPreconditions.checkFound(addressService.findById(id));
-		
-		AddressBook addressBook = addressService.findById(id);
-		
-		addressService.deleteAddress(addressBook);
+		addressService.deleteById(id);
 		
 		return ResponseEntity.noContent().build();
 	}

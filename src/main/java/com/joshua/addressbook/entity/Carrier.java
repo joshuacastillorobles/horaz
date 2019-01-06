@@ -11,6 +11,7 @@ public class Carrier {
 
 	@Id
 	private String code;
+	
 	private String name;
 
 	public Carrier() {

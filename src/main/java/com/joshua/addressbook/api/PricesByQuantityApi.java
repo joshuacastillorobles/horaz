@@ -16,42 +16,50 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.joshua.addressbook.entity.PriceByQuantity;
+import com.joshua.addressbook.dto.CreatePriceByQuantityDto;
+import com.joshua.addressbook.dto.PriceByQuantityDto;
 import com.joshua.addressbook.service.PricesByQuantityService;
-import com.joshua.addressbook.utilities.RestPreconditions;
 
 @RestController
 @RequestMapping("/prices-by-quantity")
 public class PricesByQuantityApi {
 
 	@Autowired
-	private PricesByQuantityService servicePricesByQuantity;
+	private PricesByQuantityService pricesByQuantityService;
 
 	@GetMapping()
-	public ResponseEntity<List<PriceByQuantity>> findAll() {
-		List<PriceByQuantity> prices = servicePricesByQuantity.findAll();
-		return new ResponseEntity<>(prices, HttpStatus.OK);
+	public ResponseEntity<List<PriceByQuantityDto>> findAll() {
+		List<PriceByQuantityDto> priceByQuantityDtos = pricesByQuantityService.findAll();
+		
+		return new ResponseEntity<>(priceByQuantityDtos, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<PriceByQuantityDto> findOne(@PathVariable("id") Integer id) {
+		PriceByQuantityDto priceByQuantityDto = pricesByQuantityService.findById(id);
+		
+		return new ResponseEntity<>(priceByQuantityDto, HttpStatus.OK);
 	}
 
-	@PostMapping()
-	public ResponseEntity<?> create(@RequestBody PriceByQuantity priceByQuantity, UriComponentsBuilder uriBuilder) {
-		servicePricesByQuantity.create(priceByQuantity);
-		UriComponents uriComponents = uriBuilder.path("/create/{id}").buildAndExpand(priceByQuantity.getId());
+	@PostMapping
+	public ResponseEntity<?> create(@RequestBody CreatePriceByQuantityDto createPriceByQuantityDto, UriComponentsBuilder uriBuilder) {
+		PriceByQuantityDto savedPriceByQuantityDto = pricesByQuantityService.save(createPriceByQuantityDto);
 		
+		UriComponents uriComponents = uriBuilder.path("/prices-by-quantity/{id}").buildAndExpand(savedPriceByQuantityDto.getId());
 		return ResponseEntity.created(uriComponents.toUri()).build();
 	}
 	
-	@PutMapping("/{id}")
-	public ResponseEntity<?> update(@PathVariable("id") Integer idPricesByQuantity, @RequestBody PriceByQuantity priceByQuantity){
-		RestPreconditions.checkFound(servicePricesByQuantity.findOne(idPricesByQuantity));
-		servicePricesByQuantity.updateCompany(priceByQuantity);
-		return ResponseEntity.ok("resource saved");
+	@PutMapping
+	public ResponseEntity<?> update(@RequestBody PriceByQuantityDto priceByQuantityDto){
+		pricesByQuantityService.update(priceByQuantityDto);
+		
+		return ResponseEntity.ok("Resource updated");
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletePrice(@PathVariable("id") Integer idPricesByQuantity){
-		RestPreconditions.checkFound(idPricesByQuantity);
-		servicePricesByQuantity.deleteId(idPricesByQuantity);
+	public ResponseEntity<?> delete(@PathVariable("id") Integer id) {
+		pricesByQuantityService.deleteById(id);
+		
 		return ResponseEntity.noContent().build();
 	}
 
